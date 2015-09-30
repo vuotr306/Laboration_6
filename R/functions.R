@@ -54,7 +54,34 @@ system.time({
 
 
 
+knapsack_dynamic<-function(x, W){
+  
+  n<-nrow(x)
+  m<-matrix(nrow=n+1,ncol=W+1)
+  
+  for (i in 1:(W+1)){
+    m[1,i]<-0
+  }  
+  
+  for(i in 2:(n+1)){
+    for(j in 1:(W+1)){
+      if(x$w[i-1]<=j){
+        m[i,j] <- max( m[i-1,j] , m[i-1,j-x$w[i-1] ]+x$v[i-1])        
+        
+      }else{
+        m[i,j] <- m[i-1,j]
+      }
+    }
+  }
+    
+  return(m)
+  
+}
 
+
+
+m2 <- knapsack_dynamic(x = knapsack_objects[1:8,], W = 3500)
+m2[nrow(m2), ncol(m2)]
 
 
 

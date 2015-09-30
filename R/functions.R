@@ -58,7 +58,59 @@ knapsack_dynamic<-function(x, W){
   
   n<-nrow(x)
   m<-matrix(nrow=n+1,ncol=W+1)
+  for (i in 1:(W+1)){
+    m[1,i]<-0
+  }  
   
+  for(i in 1:n){
+    for(j in 1:(W+1)){
+      if(x$w[i]<=j){
+        m[i+1,j] <- max( m[i,j] , m[i,j-x$w[i] ]+x$v[i]) 
+      }else{
+        m[i+1,j] <- m[i,j]
+      }
+    }
+  }
+  
+  return(list(value=m[nrow(m), ncol(m)],elements=NULL))
+  
+}
+
+
+
+knapsack_dynamic(x = knapsack_objects[1:8,], W = 3500)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+knapsack_dynamic2<-function(x, W){
+
+  n<-nrow(x)
+  m<-matrix(nrow=n+1,ncol=W+1)
+  element<-c()
   for (i in 1:(W+1)){
     m[1,i]<-0
   }  
@@ -66,22 +118,43 @@ knapsack_dynamic<-function(x, W){
   for(i in 2:(n+1)){
     for(j in 1:(W+1)){
       if(x$w[i-1]<=j){
-        m[i,j] <- max( m[i-1,j] , m[i-1,j-x$w[i-1] ]+x$v[i-1])        
+        m[i,j] <- max( m[i-1,j] , m[i-1,j-x$w[i-1] ]+x$v[i-1]) 
+
+        if(m[i-1,j]<m[i,j] & m[i,j-1]<m[i,j]){
+          element[j]<-i-1
+
+
+        }else{          
+          element[j]=element[j]
+        }
         
       }else{
         m[i,j] <- m[i-1,j]
       }
     }
   }
+  
     
-  return(m)
+  return(list(value=m[nrow(m), ncol(m)],elements=element))
   
 }
 
 
 
-m2 <- knapsack_dynamic(x = knapsack_objects[1:8,], W = 3500)
-m2[nrow(m2), ncol(m2)]
+knapsack_dynamic2(x = knapsack_objects[1:8,], W = 3500)
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

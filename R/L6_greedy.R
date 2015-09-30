@@ -17,7 +17,7 @@ greedy_knapsack <- function(x, W){
     }      
   }
   
-  return(list(w = total_weight, value = total_value, elements = elements))
+  return(list(value = total_value, elements = elements))
 }
 
 # greedy_knapsack(x = knapsack_objects[1:800,], W = 3500)

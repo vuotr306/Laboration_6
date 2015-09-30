@@ -5,10 +5,23 @@ knapsack_objects <-
     w=sample(1:4000, size = n, replace = TRUE),
     v=runif(n = n, 0, 10000)
   )
+rm(n)
 
+
+
+StopOurFunction<-function(x,W){
+  
+  stopifnot(is.data.frame(x))
+  stopifnot(colnames(x)==c("w","v"))
+  stopifnot(is.numeric(x$w) & is.numeric(x$v))
+  stopifnot(x$w>0 & x$v>0 & W>0)
+  
+}
 
 
 brute_force_knapsack<-function(x,W){
+  
+  StopOurFunction(x,W)
   
   no_of_objects <- nrow(x)
   no_of_sets <- 2^nrow(x)
@@ -35,26 +48,21 @@ brute_force_knapsack<-function(x,W){
   
 }
 
-brute_force_knapsack(x = knapsack_objects[1:8,], W = 3500)
-brute_force_knapsack(x = knapsack_objects[1:12,], W = 3500)
-brute_force_knapsack(x = knapsack_objects[1:8,], W = 2000)
-brute_force_knapsack(x = knapsack_objects[1:12,], W = 2000)
+# brute_force_knapsack(x = knapsack_objects[1:8,], W = 3500)
+# brute_force_knapsack(x = knapsack_objects[1:12,], W = 3500)
+# brute_force_knapsack(x = knapsack_objects[1:8,], W = 2000)
+# brute_force_knapsack(x = knapsack_objects[1:12,], W = 2000)
 
-system.time({
-  brute_force_knapsack(x = knapsack_objects[1:16,], W = 2000)
-})
-
-
-
-
-
-
-
-
+# system.time({
+#   brute_force_knapsack(x = knapsack_objects[1:16,], W = 2000)
+# })
 
 
 
 knapsack_dynamic<-function(x, W){
+  
+  StopOurFunction(x,W)
+  stopifnot( x$w %% 1 == 0)
   
   n<-nrow(x)
   m<-matrix(nrow=n+1,ncol=W+1)
@@ -77,16 +85,14 @@ knapsack_dynamic<-function(x, W){
 }
 
 
+# knapsack_dynamic(x = knapsack_objects[1:8,], W = 3500)
+# knapsack_dynamic(x = knapsack_objects[1:12,], W = 3500)
+# knapsack_dynamic(x = knapsack_objects[1:8,], W = 2000)
+# knapsack_dynamic(x = knapsack_objects[1:12,], W = 2000)
 
-knapsack_dynamic(x = knapsack_objects[1:8,], W = 3500)
-
-
-
-
-
-
-
-
+# system.time({
+#   knapsack_dynamic(x = knapsack_objects[1:500,], W = 2000)
+# })
 
 
 
@@ -94,65 +100,75 @@ knapsack_dynamic(x = knapsack_objects[1:8,], W = 3500)
 
 
 
+# knapsack_dynamic2<-function(x, W){
+# StopOurFunction(x,W)
+#   n<-nrow(x)
+#   m<-matrix(nrow=n+1,ncol=W+1)
+#   element<-c()
+#   for (i in 1:(W+1)){
+#     m[1,i]<-0
+#   }  
+#   
+#   for(i in 2:(n+1)){
+#     for(j in 1:(W+1)){
+#       if(x$w[i-1]<=j){
+#         m[i,j] <- max( m[i-1,j] , m[i-1,j-x$w[i-1] ]+x$v[i-1]) 
+# 
+#         if(m[i-1,j]<m[i,j] & m[i,j-1]<m[i,j]){
+#           element[j]<-i-1
+# 
+# 
+#         }else{          
+#           element[j]=element[j]
+#         }
+#         
+#       }else{
+#         m[i,j] <- m[i-1,j]
+#       }
+#     }
+#   }
+#   
+#     
+#   return(list(value=m[nrow(m), ncol(m)],elements=element))
+#   
+# }
+# 
+# 
+# 
+# knapsack_dynamic2(x = knapsack_objects[1:8,], W = 3500)
 
 
 
 
 
-
-
-
-
-
-
-
-knapsack_dynamic2<-function(x, W){
-
-  n<-nrow(x)
-  m<-matrix(nrow=n+1,ncol=W+1)
-  element<-c()
-  for (i in 1:(W+1)){
-    m[1,i]<-0
-  }  
+greedy_knapsack <- function(x, W){
   
-  for(i in 2:(n+1)){
-    for(j in 1:(W+1)){
-      if(x$w[i-1]<=j){
-        m[i,j] <- max( m[i-1,j] , m[i-1,j-x$w[i-1] ]+x$v[i-1]) 
-
-        if(m[i-1,j]<m[i,j] & m[i,j-1]<m[i,j]){
-          element[j]<-i-1
-
-
-        }else{          
-          element[j]=element[j]
-        }
-        
-      }else{
-        m[i,j] <- m[i-1,j]
-      }
-    }
+  StopOurFunction(x,W)
+  value_per_weight <- x$v/x$w
+  index <- order(value_per_weight, decreasing = TRUE)
+  
+  elements <- numeric(0)
+  total_weight <- 0
+  total_value <- 0
+  
+  for(i in index){
+    
+    if( (x$w[i] + total_weight) <= W){
+      elements <- c(elements, i)
+      total_weight <- x$w[i] + total_weight
+      total_value <- x$v[i] + total_value 
+    }      
   }
   
-    
-  return(list(value=m[nrow(m), ncol(m)],elements=element))
-  
+  return(list(value = total_value, elements = elements))
 }
 
+# greedy_knapsack(x = knapsack_objects[1:800,], W = 3500)
+# greedy_knapsack(x = knapsack_objects[1:1200,], W = 2000)
 
-
-knapsack_dynamic2(x = knapsack_objects[1:8,], W = 3500)
-
-
-
-
-
-
-
-
-
-
-
+# system.time({
+#   greedy_knapsack(x = knapsack_objects, W = 2000)
+# })
 
 
 

@@ -9,6 +9,8 @@ Author: c(
 Maintainer: Everythings Vuongs fault, <vuotr306@student.liu.se>
 Description: The package has three algorithms for solving the Knapsack Problem.
 License: CC0
+LinkingTo: Rcpp
+Imports: Rcpp
 Suggests: knitr,
     testthat
 VignetteBuilder: knitr

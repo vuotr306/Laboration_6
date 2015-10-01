@@ -54,8 +54,8 @@ brute_force_knapsack<-function(x,W){
 # brute_force_knapsack(x = knapsack_objects[1:12,], W = 2000)
 
 # system.time({
-#   brute_force_knapsack(x = knapsack_objects[1:16,], W = 2000)
-# })
+#  brute_force_knapsack(x = knapsack_objects[1:16,], W = 2000)
+ #})
 
 
 
@@ -64,6 +64,7 @@ knapsack_dynamic<-function(x, W){
   StopOurFunction(x,W)
   stopifnot( x$w %% 1 == 0)
   
+  best_elements <- numeric(0)
   n<-nrow(x)
   m<-matrix(nrow=n+1,ncol=W+1)
   for (i in 1:(W+1)){
@@ -80,7 +81,28 @@ knapsack_dynamic<-function(x, W){
     }
   }
   
-  return(list(value=m[nrow(m), ncol(m)],elements=NULL))
+  i <- i + 1
+  
+  while(i > 1 ){
+    
+    if( m[i-1,j] < m[i,j] ){
+      
+      best_elements <- c(best_elements, i-1)
+#       print("Hittade!")
+#       print(i)
+#       print(j)
+      
+      i <- i - 1
+      j <- j - x$w[i]
+    }else{
+      i <- i - 1
+    }
+    
+  }
+  
+  
+#   browser()
+  return(list(value=m[nrow(m), ncol(m)],elements=best_elements))
   
 }
 
@@ -90,54 +112,9 @@ knapsack_dynamic<-function(x, W){
 # knapsack_dynamic(x = knapsack_objects[1:8,], W = 2000)
 # knapsack_dynamic(x = knapsack_objects[1:12,], W = 2000)
 
-# system.time({
-#   knapsack_dynamic(x = knapsack_objects[1:500,], W = 2000)
-# })
-
-
-
-
-
-
-
-# knapsack_dynamic2<-function(x, W){
-# StopOurFunction(x,W)
-#   n<-nrow(x)
-#   m<-matrix(nrow=n+1,ncol=W+1)
-#   element<-c()
-#   for (i in 1:(W+1)){
-#     m[1,i]<-0
-#   }  
-#   
-#   for(i in 2:(n+1)){
-#     for(j in 1:(W+1)){
-#       if(x$w[i-1]<=j){
-#         m[i,j] <- max( m[i-1,j] , m[i-1,j-x$w[i-1] ]+x$v[i-1]) 
-# 
-#         if(m[i-1,j]<m[i,j] & m[i,j-1]<m[i,j]){
-#           element[j]<-i-1
-# 
-# 
-#         }else{          
-#           element[j]=element[j]
-#         }
-#         
-#       }else{
-#         m[i,j] <- m[i-1,j]
-#       }
-#     }
-#   }
-#   
-#     
-#   return(list(value=m[nrow(m), ncol(m)],elements=element))
-#   
-# }
-# 
-# 
-# 
-# knapsack_dynamic2(x = knapsack_objects[1:8,], W = 3500)
-
-
+ system.time({
+   knapsack_dynamic(x = knapsack_objects[1:500,], W = 2000)
+ })
 
 
 
@@ -169,12 +146,6 @@ greedy_knapsack <- function(x, W){
 # system.time({
 #   greedy_knapsack(x = knapsack_objects, W = 2000)
 # })
-
-
-
-
-
-
 
 
 

@@ -22,6 +22,8 @@ knapsack_objects <-
   )
 ```
 
+## Brute force algorithm
+
 The first algorithm is the brute force algorithm. The approach of this algorithm is to test all possible existing combinations of objects. If we have n objects we have two to the power of n number of possible combinations. So the algorithm is very slow for large n:s. Below is an example:
 
 ```{r}
@@ -39,6 +41,8 @@ system.time({
 })
 ```
 
+## Dynamic programming algorithm
+
 Then, we proceed with the second algorithm for solving the knapsack problem. The dynamic programming algorithm only includes objects if their additional weight does not make the total weight exceed the maximum weight. Below is an example of this algorithm:
 
 ```{r}
@@ -54,7 +58,17 @@ system.time({
 })
 ```
 
-When writing this, the dynamic programming algorithm is about 10 ????????? times faster than the brute force algorighm. Another simulation, with 500 objects took around ???????????? seconds to perform.
+When writing this, the dynamic programming algorithm is about 10 times faster than the brute force algorithm.
+
+```{r}
+system.time({
+  knapsack_dynamic(x = knapsack_objects[1:500,], W = 2000)
+})
+```
+
+Another simulation, with 500 objects took around 15 seconds to perform.
+
+## Greedy algorithm
 
 Lastly, we try a greedy algorithm, that includes the objects with the highest value per weight, as long as the weight limit is not exceeded. This algorithm does not always give the optimal solution, but the total value is at least 50 % of the optimal total value.
 Below, we see that the result differ for the eight first objects:
@@ -85,20 +99,9 @@ system.time({
   greedy_knapsack(x = knapsack_objects, W = 2000)
 })
 ```
+As the output shows, it takes lesser then 2 times for greedy approach to run the code for one million objects compare to brute force approach to run 16 objects.   
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+We want to improve the speed of the brute force algorithm and try to profile the function using both lineprof() from the lineprof package and Rprof() from the utils package. lineprof() does not give us any clue except that working with the data frame is what uses most resources. Rprof(), on the other hand, claims that the line where we create dummy variables using intToBits() is using more than half of the CPU-time. All of the lines in the for loop are, not surprisingly, the lines that use most resources in total. But using a data frame was part of the assignment and we have to create the dummy variables somehow and see no faster alternative than intToBits, so instead we create a C++ implementation of the algorithm.
 
 
 

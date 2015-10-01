@@ -1,13 +1,3 @@
-set.seed(42)
-n <- 2000
-knapsack_objects <-
-  data.frame(
-    w=sample(1:4000, size = n, replace = TRUE),
-    v=runif(n = n, 0, 10000)
-  )
-rm(n)
-
-
 
 StopOurFunction<-function(x,W){
   
@@ -44,6 +34,7 @@ brute_force_knapsack<-function(x,W){
   
   #   browser()
   best_elements <- (1:no_of_objects)[selected_objects[index_OK[index_best]][[1]]==1]
+  best_elements <- best_elements[order(best_elements, decreasing = FALSE)]
   return(list(value=values[index_OK[index_best]], elements=best_elements))
   
 }
@@ -88,9 +79,6 @@ knapsack_dynamic<-function(x, W){
     if( m[i-1,j] < m[i,j] ){
       
       best_elements <- c(best_elements, i-1)
-#       print("Hittade!")
-#       print(i)
-#       print(j)
       
       i <- i - 1
       j <- j - x$w[i]
@@ -99,9 +87,9 @@ knapsack_dynamic<-function(x, W){
     }
     
   }
+
+  best_elements <- best_elements[order(best_elements, decreasing = FALSE)]
   
-  
-#   browser()
   return(list(value=m[nrow(m), ncol(m)],elements=best_elements))
   
 }
@@ -112,9 +100,9 @@ knapsack_dynamic<-function(x, W){
 # knapsack_dynamic(x = knapsack_objects[1:8,], W = 2000)
 # knapsack_dynamic(x = knapsack_objects[1:12,], W = 2000)
 
- system.time({
-   knapsack_dynamic(x = knapsack_objects[1:500,], W = 2000)
- })
+#  system.time({
+#    knapsack_dynamic(x = knapsack_objects[1:500,], W = 2000)
+#  })
 
 
 

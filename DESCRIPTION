@@ -1,7 +1,7 @@
 Package: Lab6
 Type: Package
 Title: Three algorithms for solving the Knapsack Problem.
-Version: 0.8.0
+Version: 0.8.5
 Date: 2015-10-01
 Author: c(
  person("Oscar", "Pettersson", email="oscpe436@student.liu.se", role=c("cre", "aut"),

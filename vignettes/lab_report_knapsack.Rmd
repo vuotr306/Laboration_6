@@ -99,17 +99,21 @@ system.time({
   greedy_knapsack(x = knapsack_objects, W = 2000)
 })
 ```
-As the output shows, it takes lesser then 2 times for greedy approach to run the code for one million objects compare to brute force approach to run 16 objects.   
+As the output shows, it takes less than two times for greedy approach to run the code for one million objects compared to the brute force approach to run 16 objects.   
+
+## Speed improvement
 
 We want to improve the speed of the brute force algorithm and try to profile the function using both lineprof() from the lineprof package and Rprof() from the utils package. lineprof() does not give us any clue except that working with the data frame is what uses most resources. Rprof(), on the other hand, claims that the line where we create dummy variables using intToBits() is using more than half of the CPU-time. All of the lines in the for loop are, not surprisingly, the lines that use most resources in total. But using a data frame was part of the assignment and we have to create the dummy variables somehow and see no faster alternative than intToBits, so instead we create a C++ implementation of the algorithm.
 
+## Brute force algorithm with C++ code
 
+```{r}
+ system.time({
+  brute_force_knapsack_C(x = as.matrix(knapsack_objects[1:16,]), W = 2000)
+ })
+```
 
-
-
-
-
-Also a quote using `>`:
+The output shows that the C++ implementation of the brute force algorithm is about ten times faster than the R implementation of the dynamic programming algorithm, and approximately 100 times faster than the R implementation of the brute force algorithm.
 
 > "Jag har rätt, du har fel!"
 ([via](https://twitter.com/hadleywickham/status/504368538874703872))

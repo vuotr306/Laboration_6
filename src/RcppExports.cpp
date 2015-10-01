@@ -9,30 +9,22 @@ using namespace Rcpp;
 std::vector< int > get_bits(unsigned long x);
 RcppExport SEXP Lab6_get_bits(SEXP xSEXP) {
 BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< unsigned long >::type x(xSEXP );
-        std::vector< int > __result = get_bits(x);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< unsigned long >::type x(xSEXP);
+    __result = Rcpp::wrap(get_bits(x));
+    return __result;
 END_RCPP
 }
 // brute_force_knapsack_C
 List brute_force_knapsack_C(NumericMatrix x, int W);
 RcppExport SEXP Lab6_brute_force_knapsack_C(SEXP xSEXP, SEXP WSEXP) {
 BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< NumericMatrix >::type x(xSEXP );
-        Rcpp::traits::input_parameter< int >::type W(WSEXP );
-        List __result = brute_force_knapsack_C(x, W);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< NumericMatrix >::type x(xSEXP);
+    Rcpp::traits::input_parameter< int >::type W(WSEXP);
+    __result = Rcpp::wrap(brute_force_knapsack_C(x, W));
+    return __result;
 END_RCPP
 }

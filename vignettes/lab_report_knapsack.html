@@ -82,7 +82,7 @@ knapsack_objects &lt;-
   <span class="kw">brute_force_knapsack</span>(<span class="dt">x =</span> knapsack_objects[<span class="dv">1</span>:<span class="dv">16</span>,], <span class="dt">W =</span> <span class="dv">2000</span>)
 })</code></pre>
 <pre><code>##    user  system elapsed 
-##    7.13    0.02    7.21</code></pre>
+##   10.17    0.03   10.24</code></pre>
 </div>
 <div id="dynamic-programming-algorithm" class="section level2">
 <h2>Dynamic programming algorithm</h2>
@@ -92,19 +92,19 @@ knapsack_objects &lt;-
 ## [1] 16770.38
 ## 
 ## $elements
-## [1] 8 5</code></pre>
+## [1] 5 8</code></pre>
 <p>Here, the solution is obviously the same as for the brute force algorithm and this is always true. However, the differene between the algorithms can be seen when we use system.time() for a bigger number of objects:</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">system.time</span>({
   <span class="kw">knapsack_dynamic</span>(<span class="dt">x =</span> knapsack_objects[<span class="dv">1</span>:<span class="dv">16</span>,], <span class="dt">W =</span> <span class="dv">2000</span>)
 })</code></pre>
 <pre><code>##    user  system elapsed 
-##    0.72    0.00    0.74</code></pre>
+##    0.92    0.00    0.93</code></pre>
 <p>When writing this, the dynamic programming algorithm is about 10 times faster than the brute force algorithm.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">system.time</span>({
   <span class="kw">knapsack_dynamic</span>(<span class="dt">x =</span> knapsack_objects[<span class="dv">1</span>:<span class="dv">500</span>,], <span class="dt">W =</span> <span class="dv">2000</span>)
 })</code></pre>
 <pre><code>##    user  system elapsed 
-##   23.11    0.03   23.41</code></pre>
+##   34.50    0.00   34.78</code></pre>
 <p>Another simulation, with 500 objects took around 15 seconds to perform.</p>
 </div>
 <div id="greedy-algorithm" class="section level2">
@@ -121,7 +121,7 @@ knapsack_objects &lt;-
   <span class="kw">greedy_knapsack</span>(<span class="dt">x =</span> knapsack_objects[<span class="dv">1</span>:<span class="dv">500</span>,], <span class="dt">W =</span> <span class="dv">2000</span>)
 })</code></pre>
 <pre><code>##    user  system elapsed 
-##    0.02    0.00    0.01</code></pre>
+##       0       0       0</code></pre>
 <p>So, we test if the algorithm can handle very large numbers of objects:</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">42</span>)
 n &lt;-<span class="st"> </span><span class="fl">1E6</span>
@@ -134,10 +134,21 @@ knapsack_objects &lt;-
   <span class="kw">greedy_knapsack</span>(<span class="dt">x =</span> knapsack_objects, <span class="dt">W =</span> <span class="dv">2000</span>)
 })</code></pre>
 <pre><code>##    user  system elapsed 
-##   14.16    0.00   14.17</code></pre>
-<p>As the output shows, it takes lesser then 2 times for greedy approach to run the code for one million objects compare to brute force approach to run 16 objects.</p>
+##   20.81    0.01   20.87</code></pre>
+<p>As the output shows, it takes less than two times for greedy approach to run the code for one million objects compared to the brute force approach to run 16 objects.</p>
+</div>
+<div id="speed-improvement" class="section level2">
+<h2>Speed improvement</h2>
 <p>We want to improve the speed of the brute force algorithm and try to profile the function using both lineprof() from the lineprof package and Rprof() from the utils package. lineprof() does not give us any clue except that working with the data frame is what uses most resources. Rprof(), on the other hand, claims that the line where we create dummy variables using intToBits() is using more than half of the CPU-time. All of the lines in the for loop are, not surprisingly, the lines that use most resources in total. But using a data frame was part of the assignment and we have to create the dummy variables somehow and see no faster alternative than intToBits, so instead we create a C++ implementation of the algorithm.</p>
-<p>Also a quote using <code>&gt;</code>:</p>
+</div>
+<div id="brute-force-algorithm-with-c-code" class="section level2">
+<h2>Brute force algorithm with C++ code</h2>
+<pre class="sourceCode r"><code class="sourceCode r"> <span class="kw">system.time</span>({
+  <span class="kw">brute_force_knapsack_C</span>(<span class="dt">x =</span> <span class="kw">as.matrix</span>(knapsack_objects[<span class="dv">1</span>:<span class="dv">16</span>,]), <span class="dt">W =</span> <span class="dv">2000</span>)
+ })</code></pre>
+<pre><code>##    user  system elapsed 
+##    0.09    0.00    0.09</code></pre>
+<p>The output shows that the C++ implementation of the brute force algorithm is about ten times faster than the R implementation of the dynamic programming algorithm, and approximately 100 times faster than the R implementation of the brute force algorithm.</p>
 <blockquote>
 <p>“Jag har rätt, du har fel!” (<a href="https://twitter.com/hadleywickham/status/504368538874703872">via</a>)</p>
 </blockquote>

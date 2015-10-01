@@ -5,6 +5,7 @@ knapsack_objects <- data.frame(
   w=sample(1:4000, size = n, replace = TRUE),
   v=runif(n = n, 0, 10000)
 )
+rm(n)
 
 
 

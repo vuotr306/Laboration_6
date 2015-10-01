@@ -49,3 +49,8 @@ system.time({
   greedy_knapsack(x = knapsack_objects, W = 2000)
 })
 
+## ------------------------------------------------------------------------
+ system.time({
+  brute_force_knapsack_C(x = as.matrix(knapsack_objects[1:16,]), W = 2000)
+ })
+

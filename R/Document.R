@@ -7,26 +7,7 @@
 #' @examples brute_force_knapsack(x = knapsack_objects[1:8,], W = 3500)
 #' @return A list with two elements; the maximum value and the elements that are packed.
 "brute_force_knapsack"
-
-
-#' Different approaches to knapsack problem
-#'
-#' Three differens approaches to solve the knapsack problem: Brute force, dynamic programming and greedy approaches.
-#' @param x is object that contains two vectors with weights and values. Must be a data frame with two colums w and v.
-#' @param W is maximum weight and must be a Numeric number.
-#' @examples knapsack_dynamic(x = knapsack_objects[1:8,], W = 3500)
-#' @return A list with two elements; the maximum value and the elements that are packed.
 "knapsack_dynamic"
-
-
-
-#' Different approaches to knapsack problem
-#'
-#' Three differens approaches to solve the knapsack problem: Brute force, dynamic programming and greedy approaches.
-#' @param x is object that contains two vectors with weights and values. Must be a data frame with two colums w and v.
-#' @param W is maximum weight and must be a Numeric number.
-#' @examples greedy_knapsack(x = knapsack_objects[1:8,], W = 3500)
-#' @return A list with two elements; the maximum value and the elements that are packed.
 "greedy_knapsack"
 
 

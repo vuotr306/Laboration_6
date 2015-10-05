@@ -16,15 +16,15 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
-// brute_force_knapsack_C
-List brute_force_knapsack_C(NumericMatrix x, int W);
-RcppExport SEXP Lab6_brute_force_knapsack_C(SEXP xSEXP, SEXP WSEXP) {
+// bf_cpp
+List bf_cpp(NumericMatrix x, int W);
+RcppExport SEXP Lab6_bf_cpp(SEXP xSEXP, SEXP WSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
     Rcpp::traits::input_parameter< NumericMatrix >::type x(xSEXP);
     Rcpp::traits::input_parameter< int >::type W(WSEXP);
-    __result = Rcpp::wrap(brute_force_knapsack_C(x, W));
+    __result = Rcpp::wrap(bf_cpp(x, W));
     return __result;
 END_RCPP
 }

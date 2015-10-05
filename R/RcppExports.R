@@ -5,7 +5,7 @@ get_bits <- function(x) {
     .Call('Lab6_get_bits', PACKAGE = 'Lab6', x)
 }
 
-brute_force_knapsack_C <- function(x, W) {
-    .Call('Lab6_brute_force_knapsack_C', PACKAGE = 'Lab6', x, W)
+bf_cpp <- function(x, W) {
+    .Call('Lab6_bf_cpp', PACKAGE = 'Lab6', x, W)
 }
 

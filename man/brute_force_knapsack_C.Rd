@@ -15,9 +15,9 @@ brute_force_knapsack_C(x, W)
 A list with two elements; the maximum value and the elements that are packed.
 }
 \description{
-An improved function of \link{brute_force_knapsack}.
+An improved function of \link{brute_force_knapsack}. The function is an R function wrapped around a C++ function.
 }
 \examples{
-brute_force_knapsack_C(x = as.matrix(knapsack_objects[1:8,]), W = 3500)
+brute_force_knapsack_C(x = knapsack_objects[1:8,], W = 3500)
 }
 
